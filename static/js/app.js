@@ -20,80 +20,28 @@ let pomodoroTimeLeft = pomodoroSettings.workTime * 60; // 当前剩余秒数
 let pomodoroTimer = null;                    // 计时器句柄
 let isRunning = false;                       // 番茄钟是否运行
 
-// DOM元素
-const notesList = document.getElementById('notesList');
-const noteView = document.getElementById('noteView');
-const noteEditor = document.getElementById('noteEditor');
-const welcomeView = document.getElementById('welcomeView');
-const noteForm = document.getElementById('noteForm');
-const noteTitle = document.getElementById('noteTitle');
-const noteContent = document.getElementById('noteContent');
-const noteViewTitle = document.getElementById('noteViewTitle');
-const noteViewDate = document.getElementById('noteViewDate');
-const noteViewContent = document.getElementById('noteViewContent');
-const newNoteBtn = document.getElementById('newNoteBtn');
-const editNoteBtn = document.getElementById('editNoteBtn');
-const deleteNoteBtn = document.getElementById('deleteNoteBtn');
-const cancelEditBtn = document.getElementById('cancelEditBtn');
-const editorTitle = document.getElementById('editorTitle');
-const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
-const darkModeSwitch = document.getElementById('darkModeSwitch');
-const searchInput = document.getElementById('searchInput');
+// DOM元素 - 将在DOMContentLoaded中获取
+let notesList, noteView, noteEditor, welcomeView, noteForm, noteTitle, noteContent;
+let noteViewTitle, noteViewDate, noteViewContent, newNoteBtn, welcomeNewNoteBtn, editNoteBtn, deleteNoteBtn;
+let cancelEditBtn, editorTitle, confirmDeleteBtn, darkModeSwitch, searchInput;
 
 // 待办列表DOM元素
-const todosList = document.getElementById('todosList');
-const newTodoInput = document.getElementById('newTodoInput');
-const addTodoBtn = document.getElementById('addTodoBtn');
+let todosList, newTodoInput, addTodoBtn;
 
 // AI对话DOM元素
-const notesTabBtn = document.getElementById('notesTabBtn');
-const aiChatTabBtn = document.getElementById('aiChatTabBtn');
-const pomodoroTabBtn = document.getElementById('pomodoroTabBtn');
-const projectTabBtn = document.getElementById('projectTabBtn');
-const notesPage = document.getElementById('notesPage');
-const aiChatPage = document.getElementById('aiChatPage');
-const pomodoroPage = document.getElementById('pomodoroPage');
-const projectsPage = document.getElementById('projectPage');
-const chatMessages_div = document.getElementById('chatMessages');
-const chatInput = document.getElementById('chatInput');
-const sendChatBtn = document.getElementById('sendChatBtn');
-const clearChatBtn = document.getElementById('clearChatBtn');
+let notesTabBtn, aiChatTabBtn, pomodoroTabBtn, projectTabBtn;
+let notesPage, aiChatPage, pomodoroPage, projectsPage;
+let chatMessages_div, chatInput, sendChatBtn, clearChatBtn;
 
-// 新增：番茄钟 DOM 元素
-const timerDisplay = document.getElementById('timerDisplay');
-const timerStatus = document.getElementById('timerStatus');
-const sessionInfo = document.getElementById('sessionInfo');
-const progressCircle = document.getElementById('progressCircle');
-
-const startPauseBtn = document.getElementById('startPauseBtn');
-const resetBtn = document.getElementById('resetBtn');
-
-const workTimeInput = document.getElementById('workTimeInput');
-const shortBreakInput = document.getElementById('shortBreakInput');
-const longBreakInput = document.getElementById('longBreakInput');
-
-const completedPomodoros = document.getElementById('completedPomodoros');
-const totalFocusTime = document.getElementById('totalFocusTime');
-const dailyProgress = document.getElementById('dailyProgress');
-const recentSessions = document.getElementById('recentSessions');
-
-// 新增：时间调节按钮
-const workTimeUp = document.getElementById('workTimeUp');
-const workTimeDown = document.getElementById('workTimeDown');
-const shortBreakUp = document.getElementById('shortBreakUp');
-const shortBreakDown = document.getElementById('shortBreakDown');
-const longBreakUp = document.getElementById('longBreakUp');
-const longBreakDown = document.getElementById('longBreakDown');
+// 番茄钟 DOM 元素
+let timerDisplay, timerStatus, sessionInfo, progressCircle;
+let startPauseBtn, resetBtn, workTimeInput, shortBreakInput, longBreakInput;
+let completedPomodoros, totalFocusTime, dailyProgress, recentSessions;
+let workTimeUp, workTimeDown, shortBreakUp, shortBreakDown, longBreakUp, longBreakDown;
 
 // 项目管理相关元素
-const projectsList = document.getElementById('projectsList');
-const projectWelcomeView = document.getElementById('projectWelcomeView');
-const projectDetailView = document.getElementById('projectDetailView');
-const projectEditForm = document.getElementById('projectEditForm');
-const projectForm = document.getElementById('projectForm');
-const projectSearchInput = document.getElementById('projectSearchInput');
-// 项目管理相关的DOM元素将在需要时动态获取
-// 因为HTML中使用的是内联事件处理器
+let projectsList, projectWelcomeView, projectDetailView, projectEditForm;
+let projectForm, projectSearchInput;
 
 // AI智能建议相关变量
 let aiSuggestions = {
@@ -126,30 +74,52 @@ function initCustomComponents() {
 
 // 页面加载完成后执行
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOMContentLoaded fired');
+
+    // 获取DOM元素
+    getDOMElements();
+
+    // 调试DOM元素选择
+    console.log('Navigation elements:');
+    console.log('notesTabBtn:', notesTabBtn);
+    console.log('aiChatTabBtn:', aiChatTabBtn);
+    console.log('pomodoroTabBtn:', pomodoroTabBtn);
+    console.log('projectTabBtn:', projectTabBtn);
+    console.log('notesPage:', notesPage);
+    console.log('aiChatPage:', aiChatPage);
+    console.log('pomodoroPage:', pomodoroPage);
+    console.log('projectsPage:', projectsPage);
+
     // 初始化自定义组件
     initCustomComponents();
-    
+
     // 加载笔记列表
     loadNotes();
-    
+
     // 加载待办列表
     loadTodos();
-    
+
     // 加载项目列表
     loadProjects();
-    
+
     // 加载主题设置
     loadThemePreference();
-    
+
     // 加载聊天历史
     loadChatHistory();
-    
+
     // 初始化番茄钟
     initPomodoro();
-    
+
+    // 设置默认显示笔记页面
+    switchTab('notes');
+
     // 绑定事件
     if (newNoteBtn) {
         newNoteBtn.addEventListener('click', showNewNoteForm);
+    }
+    if (welcomeNewNoteBtn) {
+        welcomeNewNoteBtn.addEventListener('click', showNewNoteForm);
     }
     editNoteBtn.addEventListener('click', showEditNoteForm);
     deleteNoteBtn.addEventListener('click', showDeleteConfirmation);
@@ -167,21 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     
-    // 页面切换事件
-    if (notesTabBtn) {
-        notesTabBtn.addEventListener('click', () => switchTab('notes'));
-    }
-    if (aiChatTabBtn) {
-        aiChatTabBtn.addEventListener('click', () => switchTab('ai-chat'));
-    }
-    // 新增：番茄钟切换事件
-    if (pomodoroTabBtn) {
-        pomodoroTabBtn.addEventListener('click', () => switchTab('pomodoro'));
-    }
-    // 新增：项目管理切换事件
-    if (projectTabBtn) {
-        projectTabBtn.addEventListener('click', () => switchTab('projects'));
-    }
+    // 页面切换事件 - 移除，因为HTML中已经有onclick处理器
     
     // AI对话事件
     sendChatBtn.addEventListener('click', sendMessage);
@@ -332,8 +288,9 @@ async function viewNote(noteId) {
 
 // 显示新建笔记表单
 function showNewNoteForm() {
-    editorTitle.textContent = '新建笔记';
-    noteForm.reset();
+    console.log('showNewNoteForm called');
+    if (editorTitle) editorTitle.textContent = '新建笔记';
+    if (noteForm) noteForm.reset();
     currentNoteId = null;
     showView('edit');
 }
@@ -582,36 +539,71 @@ async function deleteTodo(todoId) {
 
 // 切换标签页
 function switchTab(tab) {
+    console.log('switchTab called with tab:', tab);
+
     // 移除所有按钮的active状态
-    notesTabBtn.classList.remove('active');
-    aiChatTabBtn.classList.remove('active');
-    pomodoroTabBtn.classList.remove('active');
-    projectTabBtn.classList.remove('active');
-    
+    if (notesTabBtn) {
+        notesTabBtn.classList.remove('active');
+        // 重置为默认样式
+        notesTabBtn.classList.remove('text-primary', 'bg-accent');
+        notesTabBtn.classList.add('text-muted-foreground');
+    }
+    if (aiChatTabBtn) {
+        aiChatTabBtn.classList.remove('active');
+        aiChatTabBtn.classList.remove('text-primary', 'bg-accent');
+        aiChatTabBtn.classList.add('text-muted-foreground');
+    }
+    if (pomodoroTabBtn) {
+        pomodoroTabBtn.classList.remove('active');
+        pomodoroTabBtn.classList.remove('text-primary', 'bg-accent');
+        pomodoroTabBtn.classList.add('text-muted-foreground');
+    }
+    if (projectTabBtn) {
+        projectTabBtn.classList.remove('active');
+        projectTabBtn.classList.remove('text-primary', 'bg-accent');
+        projectTabBtn.classList.add('text-muted-foreground');
+    }
+
     // 隐藏所有页面
-    notesPage.classList.add('hidden');
-    aiChatPage.classList.add('hidden');
-    pomodoroPage.classList.add('hidden');
+    if (notesPage) notesPage.classList.add('hidden');
+    if (aiChatPage) aiChatPage.classList.add('hidden');
+    if (pomodoroPage) pomodoroPage.classList.add('hidden');
     if (projectsPage) projectsPage.classList.add('hidden');
-    
+
     if (tab === 'notes') {
-        notesTabBtn.classList.add('active');
-        notesPage.classList.remove('hidden');
-        newNoteBtn.style.display = 'block';
+        if (notesTabBtn) {
+            notesTabBtn.classList.add('active');
+            notesTabBtn.classList.remove('text-muted-foreground');
+            notesTabBtn.classList.add('text-primary', 'bg-accent');
+        }
+        if (notesPage) notesPage.classList.remove('hidden');
+        if (newNoteBtn) newNoteBtn.style.display = 'block';
     } else if (tab === 'ai-chat') {
-        aiChatTabBtn.classList.add('active');
-        aiChatPage.classList.remove('hidden');
-        newNoteBtn.style.display = 'none';
+        if (aiChatTabBtn) {
+            aiChatTabBtn.classList.add('active');
+            aiChatTabBtn.classList.remove('text-muted-foreground');
+            aiChatTabBtn.classList.add('text-primary', 'bg-accent');
+        }
+        if (aiChatPage) aiChatPage.classList.remove('hidden');
+        if (newNoteBtn) newNoteBtn.style.display = 'none';
     } else if (tab === 'pomodoro') {
-        pomodoroTabBtn.classList.add('active');
-        pomodoroPage.classList.remove('hidden');
-        newNoteBtn.style.display = 'none';
+        if (pomodoroTabBtn) {
+            pomodoroTabBtn.classList.add('active');
+            pomodoroTabBtn.classList.remove('text-muted-foreground');
+            pomodoroTabBtn.classList.add('text-primary', 'bg-accent');
+        }
+        if (pomodoroPage) pomodoroPage.classList.remove('hidden');
+        if (newNoteBtn) newNoteBtn.style.display = 'none';
     } else if (tab === 'projects') {
-        projectTabBtn.classList.add('active');
+        if (projectTabBtn) {
+            projectTabBtn.classList.add('active');
+            projectTabBtn.classList.remove('text-muted-foreground');
+            projectTabBtn.classList.add('text-primary', 'bg-accent');
+        }
         if (projectsPage) projectsPage.classList.remove('hidden');
         showProjectView('list');
         loadProjects();
-        newNoteBtn.style.display = 'none';
+        if (newNoteBtn) newNoteBtn.style.display = 'none';
     }
 }
 
@@ -2241,3 +2233,93 @@ function updateVisualizationForProject(projectId) {
 // 全局暴露数据可视化函数
 window.initializeDataVisualization = initializeDataVisualization;
 window.updateVisualizationForProject = updateVisualizationForProject;
+
+// 获取DOM元素函数
+function getDOMElements() {
+    // 笔记相关元素
+    notesList = document.getElementById('notesList');
+    noteView = document.getElementById('noteView');
+    noteEditor = document.getElementById('noteEditor');
+    welcomeView = document.getElementById('welcomeView');
+    noteForm = document.getElementById('noteForm');
+    noteTitle = document.getElementById('noteTitle');
+    noteContent = document.getElementById('noteContent');
+    noteViewTitle = document.getElementById('noteViewTitle');
+    noteViewDate = document.getElementById('noteViewDate');
+    noteViewContent = document.getElementById('noteViewContent');
+    newNoteBtn = document.getElementById('newNoteBtn');
+    welcomeNewNoteBtn = document.getElementById('welcomeNewNoteBtn');
+    editNoteBtn = document.getElementById('editNoteBtn');
+    deleteNoteBtn = document.getElementById('deleteNoteBtn');
+    cancelEditBtn = document.getElementById('cancelEditBtn');
+    editorTitle = document.getElementById('editorTitle');
+    confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+    darkModeSwitch = document.getElementById('darkModeSwitch');
+    searchInput = document.getElementById('searchInput');
+
+    // 待办列表DOM元素
+    todosList = document.getElementById('todosList');
+    newTodoInput = document.getElementById('newTodoInput');
+    addTodoBtn = document.getElementById('addTodoBtn');
+
+    // AI对话DOM元素
+    notesTabBtn = document.getElementById('notesTabBtn');
+    aiChatTabBtn = document.getElementById('aiChatTabBtn');
+    pomodoroTabBtn = document.getElementById('pomodoroTabBtn');
+    projectTabBtn = document.getElementById('projectTabBtn');
+    notesPage = document.getElementById('notesPage');
+    aiChatPage = document.getElementById('aiChatPage');
+    pomodoroPage = document.getElementById('pomodoroPage');
+    projectsPage = document.getElementById('projectPage');
+    chatMessages_div = document.getElementById('chatMessages');
+    chatInput = document.getElementById('chatInput');
+    sendChatBtn = document.getElementById('sendChatBtn');
+    clearChatBtn = document.getElementById('clearChatBtn');
+
+    // 番茄钟 DOM 元素
+    timerDisplay = document.getElementById('timerDisplay');
+    timerStatus = document.getElementById('timerStatus');
+    sessionInfo = document.getElementById('sessionInfo');
+    progressCircle = document.getElementById('progressCircle');
+
+    startPauseBtn = document.getElementById('startPauseBtn');
+    resetBtn = document.getElementById('resetBtn');
+
+    workTimeInput = document.getElementById('workTimeInput');
+    shortBreakInput = document.getElementById('shortBreakInput');
+    longBreakInput = document.getElementById('longBreakInput');
+
+    completedPomodoros = document.getElementById('completedPomodoros');
+    totalFocusTime = document.getElementById('totalFocusTime');
+    dailyProgress = document.getElementById('dailyProgress');
+    recentSessions = document.getElementById('recentSessions');
+
+    // 时间调节按钮
+    workTimeUp = document.getElementById('workTimeUp');
+    workTimeDown = document.getElementById('workTimeDown');
+    shortBreakUp = document.getElementById('shortBreakUp');
+    shortBreakDown = document.getElementById('shortBreakDown');
+    longBreakUp = document.getElementById('longBreakUp');
+    longBreakDown = document.getElementById('longBreakDown');
+
+    // 项目管理相关元素
+    projectsList = document.getElementById('projectsList');
+    projectWelcomeView = document.getElementById('projectWelcomeView');
+    projectDetailView = document.getElementById('projectDetailView');
+    projectEditForm = document.getElementById('projectEditForm');
+    projectForm = document.getElementById('projectForm');
+    projectSearchInput = document.getElementById('projectSearchInput');
+
+    // 调试信息：检查关键元素是否成功获取
+    console.log('DOM Elements Check:');
+    console.log('newNoteBtn:', newNoteBtn);
+    console.log('welcomeNewNoteBtn:', welcomeNewNoteBtn);
+    console.log('notesTabBtn:', notesTabBtn);
+    console.log('aiChatTabBtn:', aiChatTabBtn);
+    console.log('pomodoroTabBtn:', pomodoroTabBtn);
+    console.log('projectTabBtn:', projectTabBtn);
+    console.log('notesPage:', notesPage);
+    console.log('aiChatPage:', aiChatPage);
+    console.log('pomodoroPage:', pomodoroPage);
+    console.log('projectsPage:', projectsPage);
+}
