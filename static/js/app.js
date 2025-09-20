@@ -23,7 +23,7 @@ let isRunning = false;                       // 番茄钟是否运行
 // DOM元素 - 将在DOMContentLoaded中获取
 let notesList, noteView, noteEditor, welcomeView, noteForm, noteTitle, noteContent;
 let noteViewTitle, noteViewDate, noteViewContent, newNoteBtn, welcomeNewNoteBtn, editNoteBtn, deleteNoteBtn;
-let cancelEditBtn, editorTitle, confirmDeleteBtn, darkModeSwitch, searchInput;
+let cancelEditBtn, editorTitle, confirmDeleteBtn, searchInput;
 
 // 待办列表DOM元素
 let todosList, newTodoInput, addTodoBtn;
@@ -102,9 +102,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // 加载项目列表
     loadProjects();
 
-    // 加载主题设置
-    loadThemePreference();
-
     // 加载聊天历史
     loadChatHistory();
 
@@ -126,7 +123,6 @@ document.addEventListener('DOMContentLoaded', () => {
     cancelEditBtn.addEventListener('click', cancelEdit);
     noteForm.addEventListener('submit', saveNote);
     confirmDeleteBtn.addEventListener('click', deleteNote);
-    darkModeSwitch.addEventListener('change', toggleDarkMode);
     searchInput.addEventListener('input', filterNotes);
     
     // 待办列表事件
@@ -167,26 +163,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // 项目和任务筛选器事件 - HTML使用内联事件处理器
     // filterProjects和filterTasks函数通过HTML onclick调用
 });
-
-// 加载主题设置
-function loadThemePreference() {
-    const darkMode = localStorage.getItem('darkMode') === 'true';
-    darkModeSwitch.checked = darkMode;
-    if (darkMode) {
-        document.body.classList.add('dark-mode');
-    }
-}
-
-// 切换暗黑模式
-function toggleDarkMode() {
-    if (darkModeSwitch.checked) {
-        document.body.classList.add('dark-mode');
-        localStorage.setItem('darkMode', 'true');
-    } else {
-        document.body.classList.remove('dark-mode');
-        localStorage.setItem('darkMode', 'false');
-    }
-}
 
 // 筛选笔记
 function filterNotes() {
@@ -2254,7 +2230,6 @@ function getDOMElements() {
     cancelEditBtn = document.getElementById('cancelEditBtn');
     editorTitle = document.getElementById('editorTitle');
     confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
-    darkModeSwitch = document.getElementById('darkModeSwitch');
     searchInput = document.getElementById('searchInput');
 
     // 待办列表DOM元素

@@ -63,10 +63,10 @@
 <body>
     <div class="container mx-auto px-4">
         <header class="my-6 flex justify-between items-center">
-            <h1 class="text-2xl font-bold text-primary flex items-center">
-                <i class="bi bi-journal-text mr-2"></i>个人记事本
-            </h1>
-            <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-6">
+                <h1 class="text-2xl font-bold text-primary flex items-center">
+                    <i class="bi bi-journal-text mr-2"></i>个人记事本
+                </h1>
                 <!-- 导航按钮 -->
                 <div class="inline-flex rounded-md shadow-sm" role="group">
                     <button id="notesTabBtn" onclick="console.log('notesTabBtn clicked'); switchTab('notes');" class="inline-flex items-center px-4 py-2 text-sm font-medium text-primary bg-background border border-input hover:bg-accent hover:text-accent-foreground focus:z-10 focus:ring-2 focus:ring-ring focus:text-accent-foreground rounded-l-md transition-colors" type="button">
@@ -82,14 +82,8 @@
                         <i class="bi bi-kanban mr-1"></i>项目管理
                     </button>
                 </div>
-                <div class="flex items-center">
-                    <input type="checkbox" id="darkModeSwitch" class="sr-only">
-                    <label for="darkModeSwitch" class="relative inline-flex items-center cursor-pointer">
-                        <div class="w-11 h-6 bg-muted rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary">
-                            <i class="bi bi-moon absolute left-1 top-1 text-xs text-muted-foreground"></i>
-                        </div>
-                    </label>
-                </div>
+            </div>
+            <div class="flex items-center">
                 <button id="newNoteBtn" class="gradient-button">
                     <i class="bi bi-plus-lg mr-1"></i>新建笔记
                 </button>
