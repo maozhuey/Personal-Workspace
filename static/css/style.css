@@ -29,7 +29,33 @@
     --shadow-color: rgba(0, 0, 0, 0.1);
 }
 
-
+.dark {
+    /* Modern dark theme inspired by Aceternity */
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 263.4 70% 50.4%;
+    --primary-foreground: 210 20% 98%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 263.4 70% 50.4%;
+    
+    /* Dark mode specific variables */
+    --glass-bg: rgba(0, 0, 0, 0.4);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --shadow-color: rgba(0, 0, 0, 0.3);
+}
 
 * {
     border-color: hsl(var(--border));
@@ -495,7 +521,36 @@ body::before {
     border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
+/* 暗黑模式 */
+body.dark-mode {
+    background-color: #212529;
+    color: #e9ecef;
+}
 
+body.dark-mode .card {
+    background-color: #343a40;
+    color: #e9ecef;
+}
+
+body.dark-mode .card-header {
+    background-color: #2b3035;
+    color: #e9ecef;
+}
+
+body.dark-mode .list-group-item {
+    background-color: #343a40;
+    color: #e9ecef;
+    border-color: #495057;
+}
+
+body.dark-mode .list-group-item:hover {
+    background-color: #495057;
+}
+
+body.dark-mode .list-group-item.active {
+    background-color: #495057;
+    border-left-color: #0d6efd;
+}
 
 /* 现代表单样式 - Aceternity AI SaaS风格 */
 .form-control {
@@ -532,7 +587,38 @@ body::before {
     font-size: 0.875rem;
 }
 
+body.dark-mode .form-control,
+body.dark-mode .input-group-text {
+    background-color: rgba(73, 80, 87, 0.8);
+    color: #e9ecef;
+    border-color: rgba(108, 117, 125, 0.5);
+    backdrop-filter: blur(10px);
+}
 
+body.dark-mode .form-control:focus {
+    background-color: rgba(73, 80, 87, 1);
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+body.dark-mode .modal-content {
+    background-color: #343a40;
+    color: #e9ecef;
+}
+
+body.dark-mode .text-muted {
+    color: #adb5bd !important;
+}
+
+body.dark-mode .btn-outline-secondary {
+    color: #adb5bd;
+    border-color: #6c757d;
+}
+
+body.dark-mode .toast {
+    background-color: #343a40;
+    color: #e9ecef;
+}
 
 /* 现代列表样式 - Aceternity AI SaaS风格 */
 #notesList .list-group-item {
@@ -1328,7 +1414,30 @@ header h1 {
     animation: pulse 2s infinite;
 }
 
+/* 暗黑模式下的番茄钟样式 */
+body.dark-mode .timer-display {
+    color: #f8f9fa;
+}
 
+body.dark-mode .timer-status {
+    color: #adb5bd;
+}
+
+body.dark-mode .session-info {
+    color: #ced4da;
+}
+
+body.dark-mode .stat-label {
+    color: #adb5bd;
+}
+
+body.dark-mode .session-record {
+    border-bottom-color: #495057;
+}
+
+body.dark-mode .session-time {
+    color: #adb5bd;
+}
 
 /* 响应式设计 */
 @media (max-width: 768px) {
@@ -1858,7 +1967,67 @@ header h1 {
     color: white;
 }
 
+/* 暗黑模式适配 */
+body.dark-mode #projectsList .list-group-item {
+    background: #2d3748;
+    color: #e2e8f0;
+    border-left-color: #4a5568;
+}
 
+body.dark-mode #projectsList .list-group-item:hover {
+    background: #374151;
+}
+
+body.dark-mode #projectsList .list-group-item.active {
+    background: #1e3a8a;
+    border-left-color: #3b82f6;
+}
+
+body.dark-mode #projectDetailView,
+body.dark-mode #projectWelcomeView,
+body.dark-mode #projectEditForm {
+    background: #2d3748;
+    color: #e2e8f0;
+}
+
+body.dark-mode .task-card {
+    background: #374151;
+    color: #e2e8f0;
+}
+
+body.dark-mode .task-card.completed {
+    background: #1f2937;
+}
+
+body.dark-mode .card-header {
+    background: linear-gradient(135deg, #374151, #4b5563);
+    color: #e2e8f0;
+    border-bottom-color: #6b7280;
+}
+
+body.dark-mode #projectSearchInput {
+    background: #374151;
+    color: #e2e8f0;
+    border-color: #6b7280;
+}
+
+body.dark-mode #projectSearchInput:focus {
+    background: #374151;
+    border-color: #667eea;
+}
+
+body.dark-mode .form-control,
+body.dark-mode .form-select {
+    background: #374151;
+    color: #e2e8f0;
+    border-color: #6b7280;
+}
+
+body.dark-mode .form-control:focus,
+body.dark-mode .form-select:focus {
+    background: #374151;
+    border-color: #667eea;
+}
 
 /* AI建议功能样式 */
 .ai-suggestions {
@@ -2260,7 +2429,20 @@ header h1 {
     color: var(--foreground);
 }
 
+/* 深色模式适配 */
+body.dark-mode .ai-suggestion {
+    background: rgba(30, 30, 30, 0.8);
+    color: hsl(var(--foreground));
+}
 
+body.dark-mode .recommended-tasks {
+    background: rgba(40, 40, 40, 0.5);
+    border-color: rgba(99, 102, 241, 0.3);
+}
+
+body.dark-mode .ai-suggestion-group {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
+}
 
 [data-theme="dark"] .ai-chart-card {
     background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.8));
